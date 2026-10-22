@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
-      - run: pip install -e . playwright >/dev/null 2>&1
+      - run: pip install requests pytest playwright >/dev/null 2>&1
       # Public repo: nothing about the target may reach logs or artifacts in clear text.
       # Output is silenced; the report is written to a file and encrypted before upload.
       - name: Run checks (quiet)
