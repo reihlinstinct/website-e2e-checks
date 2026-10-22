@@ -34,6 +34,15 @@ is aborted, so forms are validated but never submitted. Real submissions need te
 Results (`shots/`, `reports/`) are git-ignored on purpose: they describe a specific site.
 Some checks can fail for a given site, and that is the point.
 
+## Private report from CI
+
+This repo is public, so CI never prints findings. The workflow runs everything with output silenced, builds
+`report.md` (failures, generic improvement suggestions, passive security results, detected software versions to compare
+with public advisories), encrypts it to the certificate in `certs/report-recipient.pem` (CMS, only the holder of the
+private key can read it) and uploads only the encrypted `report.p7m`. The public log and step summary show pass/fail counts only.
+Passive security checks use normal GET requests and TLS metadata. No scanning, fuzzing, login attempts or load.
+`EXPOSED_PATHS` (comma list) overrides which default files are probed.
+
 ## CI
 
 `.github/workflows/ci.yml` runs weekly and on demand with `SITE_URL` from a secret.
