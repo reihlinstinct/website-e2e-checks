@@ -13,7 +13,7 @@ jobs:
       SITE_URL: ${{ secrets.SITE_URL }}
       SITE_PROFILE_JSON: ${{ secrets.SITE_PROFILE_JSON }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: pip install requests pytest playwright >/dev/null 2>&1
