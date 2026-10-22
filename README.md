@@ -17,6 +17,12 @@ Point it at a site through configuration and it runs the whole suite. Nothing ab
 | `EXPECT_DIR` | no | Expected `dir` (`ltr` or `rtl`). Skipped when unset. |
 | `LOCALE` | no | Browser locale for e2e, default `en-US`. |
 
+### Site-specific form tests (private profile)
+
+`SITE_PROFILE_JSON` (a secret, never committed) can describe forms: CSS selector, field selectors and values,
+submit selector, expected text and `allow_submit`. See `e2e/site_profile.py`. Without `allow_submit: true` every POST
+is aborted, so forms are validated but never submitted. Real submissions need test data and an OK from the site owner.
+
 ## Run
 
     pip install -e .
