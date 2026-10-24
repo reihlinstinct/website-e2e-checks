@@ -18,7 +18,6 @@ jobs:
         with: { python-version: "3.12" }
       - run: pip install requests pytest playwright >/dev/null 2>&1
       # Public repo: nothing about the target may reach logs or artifacts in clear text.
-      # Output is silenced; the report is written to a file and encrypted before upload.
       - name: Run checks (quiet)
         run: |
           mkdir -p reports
@@ -38,3 +37,27 @@ jobs:
           name: encrypted-report
           path: report.p7m
           retention-days: 14
+
+  checks-b:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SITE_URL: ${{ secrets.SITE_URL_B }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with: { python-version: "3.12" }
+      - run: pip install requests pytest playwright >/dev/null 2>&1
+      # Second target. No report is produced or uploaded until a report recipient is chosen; counts only.
+      - name: Run checks (quiet)
+        run: |
+          mkdir -p reports
+          set +e
+          pytest -q --tb=no -rN --junitxml=reports/junit.xml >/dev/null 2>&1
+          playwright install --with-deps chromium >/dev/null 2>&1
+          curl -fsSL https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js -o axe.min.js
+          python e2e/e2e_audit.py reports/shots axe.min.js >/dev/null 2>&1
+          python report/build_report.py reports/junit.xml reports/shots/report.json > reports/report.md 2> reports/counts.txt
+          echo "check run finished"
+      - name: Counts only (public)
+        run: cat reports/counts.txt | tee -a "$GITHUB_STEP_SUMMARY"
