@@ -116,3 +116,8 @@ def test_counts_output_contains_only_numbers():
                            env={**os.environ, "SITE_URL": "http://127.0.0.1:9"}, capture_output=True, text=True)
     assert r.returncode == 0, r.stderr[-300:]
     assert re.fullmatch(r"passed=\d+ failed=\d+ skipped=\d+\s*", r.stderr), r.stderr
+
+
+def test_second_target_is_manual_only():
+    _, job = site_jobs()["checks-b"]
+    assert job.get("if", "").replace(" ", "") == "github.event_name=='workflow_dispatch'"
