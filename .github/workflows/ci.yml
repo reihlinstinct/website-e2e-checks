@@ -14,7 +14,7 @@ jobs:
       SITE_PROFILE_JSON: ${{ secrets.SITE_PROFILE_JSON }}
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with: { python-version: "3.12" }
       - run: pip install requests pytest playwright >/dev/null 2>&1
       # Public repo: nothing about the target may reach logs or artifacts in clear text.
