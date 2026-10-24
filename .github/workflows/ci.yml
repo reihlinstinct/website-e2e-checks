@@ -22,7 +22,7 @@ jobs:
         run: |
           mkdir -p reports
           set +e
-          pytest -q --tb=no -rN --junitxml=reports/junit.xml >/dev/null 2>&1
+          pytest tests -q --tb=no -rN --junitxml=reports/junit.xml >/dev/null 2>&1
           playwright install --with-deps chromium >/dev/null 2>&1
           curl -fsSL https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js -o axe.min.js
           python e2e/e2e_audit.py reports/shots axe.min.js >/dev/null 2>&1
@@ -48,16 +48,24 @@ jobs:
       - uses: actions/setup-python@v7
         with: { python-version: "3.12" }
       - run: pip install requests pytest playwright >/dev/null 2>&1
-      # Second target. No report is produced or uploaded until a report recipient is chosen; counts only.
+      # Second target. Detailed report encrypted to its own private certificate (never the first target's).
+      # Public log and summary show counts only.
       - name: Run checks (quiet)
         run: |
           mkdir -p reports
           set +e
-          pytest -q --tb=no -rN --junitxml=reports/junit.xml >/dev/null 2>&1
+          pytest tests -q --tb=no -rN --junitxml=reports/junit.xml >/dev/null 2>&1
           playwright install --with-deps chromium >/dev/null 2>&1
           curl -fsSL https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js -o axe.min.js
           python e2e/e2e_audit.py reports/shots axe.min.js >/dev/null 2>&1
           python report/build_report.py reports/junit.xml reports/shots/report.json > reports/report.md 2> reports/counts.txt
           echo "check run finished"
+      - name: Encrypt report to the private certificate
+        run: openssl cms -encrypt -aes-256-cbc -in reports/report.md -out report-b.p7m -outform DER certs/private-report-recipient.pem
       - name: Counts only (public)
         run: cat reports/counts.txt | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: encrypted-report-b
+          path: report-b.p7m
+          retention-days: 14
