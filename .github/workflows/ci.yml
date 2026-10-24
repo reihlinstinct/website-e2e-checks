@@ -39,6 +39,8 @@ jobs:
           retention-days: 14
 
   checks-b:
+    # Manual only: the second target is not on the weekly schedule.
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
