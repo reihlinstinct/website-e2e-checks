@@ -1,0 +1,39 @@
+{
+  "mappings": [
+    {
+      "pattern": "tests/**",
+      "checks": [
+        "checks",
+        "checks-b"
+      ]
+    },
+    {
+      "pattern": "e2e/**",
+      "checks": [
+        "checks",
+        "checks-b"
+      ]
+    },
+    {
+      "pattern": "report/**",
+      "checks": [
+        "checks",
+        "checks-b"
+      ]
+    },
+    {
+      "pattern": "policy/**",
+      "checks": [
+        "policy"
+      ]
+    },
+    {
+      "pattern": "pyproject.toml",
+      "checks": [
+        "checks",
+        "checks-b",
+        "policy"
+      ]
+    }
+  ]
+}

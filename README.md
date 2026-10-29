@@ -17,6 +17,8 @@ Point it at a site through configuration and it runs the whole suite. Nothing ab
 | `EXPECT_DIR` | no | Expected `dir` (`ltr` or `rtl`). Skipped when unset. |
 | `LOCALE` | no | Browser locale for e2e, default `en-US`. |
 
+Every workflow ends with a `Run summary` job that writes a summary to the top of the run page: which jobs ran, their result and duration, what was skipped and why, the commits and files the run changed, and which checks cover those changes (`.github/ci-coverage-map.json` declares the coverage; files matching no mapping are flagged). The script is `scripts/ci/run_summary.py`.
+
 ### Site-specific form tests (private profile)
 
 `SITE_PROFILE_JSON` (a secret, never committed) can describe forms: CSS selector, field selectors and values,
