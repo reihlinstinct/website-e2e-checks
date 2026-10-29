@@ -73,6 +73,8 @@ jobs:
           retention-days: 14
 
   summary:
+    permissions:
+      contents: read
     name: Run summary
     if: always()
     needs: [checks, checks-b]
