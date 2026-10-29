@@ -1,0 +1,109 @@
+{
+ "version": 1,
+ "findings": [
+  {
+   "path": ".github/workflows/scorecard.yml",
+   "rule": "job-write",
+   "scope": "analysis",
+   "evidence": "security-events: write",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Approved job-scoped SARIF upload to GitHub code scanning; no code or secrets write."
+  },
+  {
+   "path": ".github/workflows/ci.yml",
+   "rule": "unpinned-action",
+   "scope": "checks",
+   "evidence": "actions/checkout@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/ci.yml",
+   "rule": "unpinned-action",
+   "scope": "checks",
+   "evidence": "actions/setup-python@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/ci.yml",
+   "rule": "unpinned-action",
+   "scope": "checks",
+   "evidence": "actions/upload-artifact@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/ci.yml",
+   "rule": "unpinned-action",
+   "scope": "checks-b",
+   "evidence": "actions/checkout@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/ci.yml",
+   "rule": "unpinned-action",
+   "scope": "checks-b",
+   "evidence": "actions/setup-python@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/ci.yml",
+   "rule": "unpinned-action",
+   "scope": "checks-b",
+   "evidence": "actions/upload-artifact@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/ci.yml",
+   "rule": "unpinned-action",
+   "scope": "summary",
+   "evidence": "actions/checkout@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/ci.yml",
+   "rule": "unhashed-pip-install",
+   "scope": "dependencies",
+   "evidence": "pip install requests pytest playwright >/dev/null 2>&1",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing pip install without --require-hashes; resolves unhashed dependencies; tracked for hash pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/validate.yml",
+   "rule": "unpinned-action",
+   "scope": "policy",
+   "evidence": "actions/checkout@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/validate.yml",
+   "rule": "unpinned-action",
+   "scope": "policy",
+   "evidence": "actions/setup-python@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/validate.yml",
+   "rule": "unpinned-action",
+   "scope": "summary",
+   "evidence": "actions/checkout@v7",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing action ref pinned by tag/branch, not commit SHA; tracked for SHA pinning in this issue."
+  },
+  {
+   "path": ".github/workflows/validate.yml",
+   "rule": "unhashed-pip-install",
+   "scope": "dependencies",
+   "evidence": "pip install requests pytest pyyaml",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
+   "reason": "Pre-existing pip install without hash checking; tracked for --require-hashes migration in this issue."
+  }
+ ]
+}
