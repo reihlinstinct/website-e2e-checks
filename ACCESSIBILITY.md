@@ -5,9 +5,9 @@ user-facing content and interfaces.
 
 ## What we do
 
-- Semantic markup and keyboard-navigable interfaces.
-- Readable contrast and scalable text.
-- The project ships a web UI / site. We check it with automated accessibility tests in Chrome and WebKit (Safari) in CI, and review visual changes on desktop and mobile.
+- This repository is a reusable test suite for websites; it ships no end-user web UI of its own, so this statement covers its documentation and outputs.
+- The suite itself helps accessibility: its browser audit runs automated WCAG A/AA checks (axe-core via Playwright) against the configured target site.
+- In CI the browser audit runs in Chromium today; WebKit coverage is not set up.
 
 ## Known limitations
 
