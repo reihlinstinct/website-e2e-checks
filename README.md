@@ -1,5 +1,7 @@
 # website-e2e-checks
 
+[![site checks](https://github.com/reihlinstinct/website-e2e-checks/actions/workflows/ci.yml/badge.svg)](https://github.com/reihlinstinct/website-e2e-checks/actions/workflows/ci.yml) [![validate](https://github.com/reihlinstinct/website-e2e-checks/actions/workflows/validate.yml/badge.svg)](https://github.com/reihlinstinct/website-e2e-checks/actions/workflows/validate.yml)
+
 A reusable, non-intrusive test suite for any website you own or have permission to test.
 Point it at a site through configuration and it runs the whole suite. Nothing about the target is stored in this repo.
 
