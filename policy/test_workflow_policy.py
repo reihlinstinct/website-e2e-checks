@@ -9,7 +9,7 @@ import pytest, yaml
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 WORKFLOWS = sorted((ROOT / ".github" / "workflows").glob("*.yml"))
-ALLOWED_HOSTS = {"cdnjs.cloudflare.com", "github.com", "docs.github.com", "example.com", "127.0.0.1"}
+ALLOWED_HOSTS = {"cdnjs.cloudflare.com", "github.com", "docs.github.com", "example.com", "127.0.0.1", "www.contributor-covenant.org"}
 # job -> (secret holding its target, the only recipient certificate it may use)
 TARGETS = {
     "checks": ("SITE_URL", "certs/report-recipient.pem"),
