@@ -71,3 +71,19 @@ jobs:
           name: encrypted-report-b
           path: report-b.p7m
           retention-days: 14
+
+  summary:
+    name: Run summary
+    if: always()
+    needs: [checks, checks-b]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Write run summary
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/ci/run_summary.py

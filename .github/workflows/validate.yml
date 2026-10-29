@@ -15,3 +15,19 @@ jobs:
       - run: pip install requests pytest pyyaml
       - name: Multi-target secrecy policy
         run: pytest -q policy
+
+  summary:
+    name: Run summary
+    if: always()
+    needs: [policy]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Write run summary
+        env:
+          NEEDS_JSON: ${{ toJSON(needs) }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/ci/run_summary.py

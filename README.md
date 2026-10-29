@@ -13,6 +13,8 @@ Point it at a site through configuration and it runs the whole suite. Nothing ab
 | Variable | Required | Meaning |
 | --- | --- | --- |
 | `SITE_URL` | yes | Target, for example `https://example.com`. In CI it comes from the `SITE_URL` Actions secret. |
+
+Every workflow ends with a `Run summary` job that writes a summary to the top of the run page: which jobs ran, their result and duration, what was skipped and why, the commits and files the run changed, and which checks cover those changes (`.github/ci-coverage-map.json` declares the coverage; files matching no mapping are flagged). The script is `scripts/ci/run_summary.py`.
 | `EXPECT_LANG` | no | Expected `lang` prefix on the html element (for example `en`). Test is skipped when unset. |
 | `EXPECT_DIR` | no | Expected `dir` (`ltr` or `rtl`). Skipped when unset. |
 | `LOCALE` | no | Browser locale for e2e, default `en-US`. |
