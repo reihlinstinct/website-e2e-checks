@@ -69,7 +69,7 @@
    "path": ".github/workflows/ci.yml",
    "rule": "unhashed-pip-install",
    "scope": "dependencies",
-   "evidence": "pip install requests pytest playwright >/dev/null 2>&1",
+   "evidence": "pip install requests pytest playwright '>/dev/null' '2>'",
    "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
    "reason": "Pre-existing pip install without --require-hashes; resolves unhashed dependencies; tracked for hash pinning in this issue."
   },
