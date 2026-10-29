@@ -1,4 +1,4 @@
-import os, re, pytest, requests
+import os, re, ssl, pytest, requests
 
 BASE = os.environ["SITE_URL"].rstrip("/")  # required; supplied via env or Actions secret, never stored in the repo
 HEADERS = {"User-Agent": "website-e2e-checks/0.1 (owner-requested, single-user checks)"}
@@ -9,6 +9,13 @@ def home():
     r = requests.get(BASE + "/", headers=HEADERS, timeout=20)
     r.elapsed_s = r.elapsed.total_seconds()
     return r
+
+
+def tls_context() -> ssl.SSLContext:
+    """TLS client context for the passive checks: TLS 1.2+ only."""
+    ctx = ssl.create_default_context()
+    ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+    return ctx
 
 
 def find(pattern, text, flags=re.I | re.S):

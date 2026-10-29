@@ -1,5 +1,5 @@
 import os, re, time, pytest, requests
-from conftest import BASE, HEADERS, find
+from conftest import BASE, HEADERS, find, tls_context
 
 
 def test_home_ok(home):
@@ -65,7 +65,7 @@ def test_tls_cert_not_expiring_soon():
     import ssl, socket, datetime
     host = BASE.split("//")[1]
     with socket.create_connection((host, 443), timeout=10) as s:
-        cert = ssl.create_default_context().wrap_socket(s, server_hostname=host).getpeercert()
+        cert = tls_context().wrap_socket(s, server_hostname=host).getpeercert()
     days = (datetime.datetime.strptime(cert["notAfter"], "%b %d %H:%M:%S %Y %Z") - datetime.datetime.utcnow()).days
     assert days > 14, f"cert expires in {days} days"
 

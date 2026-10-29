@@ -1,6 +1,6 @@
 """Passive security checks: normal GET requests and TLS metadata only. No probing, no fuzzing, no login."""
 import os, re, ssl, socket, pytest, requests
-from conftest import BASE, HEADERS
+from conftest import BASE, HEADERS, tls_context
 
 PATHS = [p for p in os.environ.get("EXPOSED_PATHS", "/readme.html,/license.txt,/xmlrpc.php").split(",") if p]
 
@@ -8,7 +8,7 @@ PATHS = [p for p in os.environ.get("EXPOSED_PATHS", "/readme.html,/license.txt,/
 def test_tls_modern_version():
     host = BASE.split("//")[1].split("/")[0]
     with socket.create_connection((host, 443), timeout=10) as s:
-        v = ssl.create_default_context().wrap_socket(s, server_hostname=host).version()
+        v = tls_context().wrap_socket(s, server_hostname=host).version()
     assert v in ("TLSv1.2", "TLSv1.3"), v
 
 
