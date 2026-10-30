@@ -18,7 +18,7 @@ ENV_RE = re.compile(
     r"""|os\.environ\.get\(\s*["']([A-Z][A-Z0-9_]+)["']"""
     r"""|os\.getenv\(\s*["']([A-Z][A-Z0-9_]+)["']"""
 )
-SPAN_RE = re.compile(r"```[^\n]*\n(.*?)```|`([^`\n]+)`", re.S)
+SPAN_RE = re.compile(r"```[^\n]*\n(.*?)```|`([^`\n]+)`", re.DOTALL)
 ASSIGN_RE = re.compile(r"\b([A-Z][A-Z0-9_]{2,})=")
 
 
