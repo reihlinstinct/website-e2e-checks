@@ -18,7 +18,8 @@ ENV_RE = re.compile(
     r"""|os\.environ\.get\(\s*["']([A-Z][A-Z0-9_]+)["']"""
     r"""|os\.getenv\(\s*["']([A-Z][A-Z0-9_]+)["']"""
 )
-DOC_ENV_RE = re.compile(r"`([A-Z][A-Z0-9_]{2,})`")
+SPAN_RE = re.compile(r"```[^\n]*\n(.*?)```|`([^`\n]+)`", re.S)
+ASSIGN_RE = re.compile(r"\b([A-Z][A-Z0-9_]{2,})=")
 
 
 def _allowlist() -> dict[str, str]:
@@ -49,6 +50,16 @@ def code_env() -> set[str]:
     return out
 
 
+def doc_env(text: str) -> set[str]:
+    """Variables the docs present as configuration: backticked UPPER_SNAKE
+    tokens anywhere, plus NAME=value assignments in code spans and fences."""
+    out = set(re.findall(r"`([A-Z][A-Z0-9_]{2,})`", text))
+    for m in SPAN_RE.finditer(text):
+        span = m.group(1) if m.group(1) is not None else m.group(2)
+        out.update(ASSIGN_RE.findall(span))
+    return out
+
+
 def test_every_env_var_is_documented():
     text = "\n".join(p.read_text(encoding="utf-8") for p in DOC_FILES)
     allowed = _allowlist()
@@ -60,7 +71,16 @@ def test_every_documented_var_exists():
     known = code_env() | set(_allowlist())
     stale: set[str] = set()
     for doc in DOC_FILES:
-        for token in DOC_ENV_RE.findall(doc.read_text(encoding="utf-8")):
+        for token in doc_env(doc.read_text(encoding="utf-8")):
             if token not in known:
                 stale.add(f"{doc.relative_to(ROOT)}: {token}")
     assert not stale, f"documented variables missing from code: {sorted(stale)}"
+
+
+def test_doc_env_catches_fake_var_in_fence():
+    fence = "```bash\nTOTALLY_FAKE_VAR=1 pytest -q\n```\n"
+    assert "TOTALLY_FAKE_VAR" in doc_env(fence)
+
+
+def test_doc_env_catches_fake_var_inline():
+    assert "TOTALLY_FAKE_VAR" in doc_env("`TOTALLY_FAKE_VAR=1 pytest -q`")
