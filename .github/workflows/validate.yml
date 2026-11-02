@@ -22,12 +22,41 @@ jobs:
       - name: Python-version guard tests
         run: pytest -q test_python_version.py
 
+  coverage:
+    # Offline coverage floor (#22): unit/ and tests/security run under
+    # coverage with a >=80% branch floor on each measured production
+    # module; the combined report also lists the live browser scripts
+    # (e2e_audit.py, form_validation.py) at their honest 0% so the
+    # denominator stays public. docs/coverage-baseline.md has the baseline.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with: { python-version: "3.13" }
+      - run: pip install requests pytest coverage
+      - name: Floored offline coverage
+        run: |
+          coverage erase
+          coverage run --branch --source=e2e,report,scripts -m pytest --noconftest unit tests/security -q
+          coverage report --include=e2e/site_profile.py --fail-under=80
+          coverage report --include=report/suggestions.py --fail-under=80
+          coverage report --include=report/build_report.py --fail-under=80
+          coverage report --include=scripts/ci/run_summary.py --fail-under=80
+          coverage report --include=scripts/security/scorecard_guard.py --fail-under=80
+      - name: Combined denominator report (informational)
+        run: |
+          coverage report -m | tee coverage-combined.txt
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat coverage-combined.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
   summary:
     permissions:
       contents: read
     name: Run summary
     if: always()
-    needs: [policy]
+    needs: [policy, coverage]
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7

@@ -104,6 +104,14 @@
    "evidence": "pip install requests pytest pyyaml",
    "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/33",
    "reason": "Pre-existing pip install without hash checking; tracked for --require-hashes migration in this issue."
+  },
+  {
+   "path": ".github/workflows/validate.yml",
+   "rule": "unhashed-pip-install",
+   "scope": "dependencies",
+   "evidence": "pip install requests pytest coverage",
+   "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/22",
+   "reason": "Coverage job test tooling installed without --require-hashes, matching the repo's existing baselined pip pattern; tracked for hash pinning under the repo's scorecard tracker."
   }
  ]
 }
