@@ -27,7 +27,7 @@ def test_both_scripts_have_the_guard_before_any_side_effects():
         # The guard call precedes every other statement after the docstring
         # imports: no env access or heavy import may run before it.
         call = src.rindex("_check_python_version()")
-        assert src.index('os.environ["SITE_URL"]') > call or "SITE_URL" not in src
+        assert "SITE_URL" not in src or src.index('os.environ["SITE_URL"]') > call
         if script.startswith("e2e/"):
             assert src.index("playwright") > call, script
 
