@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
-        with: { python-version: "3.12" }
+        with: { python-version: "3.13" }
       - run: pip install requests pytest playwright >/dev/null 2>&1
       # Public repo: nothing about the target may reach logs or artifacts in clear text.
       - name: Run checks (quiet)
@@ -48,7 +48,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
-        with: { python-version: "3.12" }
+        with: { python-version: "3.13" }
       - run: pip install requests pytest playwright >/dev/null 2>&1
       # Second target. Detailed report encrypted to its own private certificate (never the first target's).
       # Public log and summary show counts only.

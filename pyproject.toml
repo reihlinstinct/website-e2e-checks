@@ -2,7 +2,13 @@
 name = "website-e2e-checks"
 version = "0.1.0"
 description = "Non-intrusive smoke, SEO, accessibility-basics and header checks for a website"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
 dependencies = ["requests>=2.31", "pytest>=8"]
 
 [tool.pytest.ini_options]
