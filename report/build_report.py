@@ -2,6 +2,20 @@
 Usage: python report/build_report.py junit.xml [e2e_report.json] > report.md ; prints counts to stderr."""
 import json, os, re, sys, xml.etree.ElementTree as ET, requests
 sys.path.insert(0, __file__.rsplit("/", 1)[0])
+MIN_PYTHON = (3, 11)
+
+
+def _check_python_version():
+    if sys.version_info < MIN_PYTHON:
+        raise SystemExit(
+            sys.argv[0].rsplit("/", 1)[-1]
+            + " requires Python 3.11+ (you are running "
+            + ".".join(str(p) for p in sys.version_info[:3])
+            + "). Python 3.10 is end-of-life; please use a newer interpreter."
+        )
+
+
+_check_python_version()
 from suggestions import SUGGESTIONS
 
 def main():

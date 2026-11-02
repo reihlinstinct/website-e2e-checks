@@ -1,5 +1,19 @@
 """Owner-requested e2e audit. Never submits forms. Usage: python e2e_audit.py [outdir] [axe.min.js]"""
 import json, sys, os
+MIN_PYTHON = (3, 11)
+
+
+def _check_python_version():
+    if sys.version_info < MIN_PYTHON:
+        raise SystemExit(
+            sys.argv[0].rsplit("/", 1)[-1]
+            + " requires Python 3.11+ (you are running "
+            + ".".join(str(p) for p in sys.version_info[:3])
+            + "). Python 3.10 is end-of-life; please use a newer interpreter."
+        )
+
+
+_check_python_version()
 from playwright.sync_api import sync_playwright
 BASE = os.environ["SITE_URL"]
 OUT = sys.argv[1] if len(sys.argv) > 1 else "shots"
