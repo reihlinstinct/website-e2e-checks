@@ -1,7 +1,7 @@
 """Build a private Markdown report from junit XML (+ optional e2e JSON). Never print the report to logs.
 Usage: python report/build_report.py junit.xml [e2e_report.json] > report.md ; prints counts to stderr."""
-import json, os, re, sys, xml.etree.ElementTree as ET, requests
-sys.path.insert(0, __file__.rsplit("/", 1)[0])
+import sys
+
 MIN_PYTHON = (3, 11)
 
 
@@ -16,6 +16,9 @@ def _check_python_version():
 
 
 _check_python_version()
+
+import json, os, re, xml.etree.ElementTree as ET, requests
+sys.path.insert(0, __file__.rsplit("/", 1)[0])
 from suggestions import SUGGESTIONS
 
 def main():
