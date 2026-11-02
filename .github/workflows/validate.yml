@@ -19,6 +19,8 @@ jobs:
       - run: pip install requests pytest pyyaml
       - name: Multi-target secrecy policy
         run: pytest -q policy
+      - name: Python-version guard tests
+        run: pytest -q test_python_version.py
 
   summary:
     permissions:
