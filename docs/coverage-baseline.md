@@ -25,14 +25,14 @@ cannot hide from the report.
 
 ## Production-only denominator
 
-Measured production code (branch coverage, 103 tests + 21 subtests):
+Measured production code (branch coverage, 105 tests + 21 subtests):
 
 | Module | Stmts | Branch | Cover | Floor |
 |---|---|---|---|---|
 | `e2e/budgets.py` | 19 | 6 | 100% | >=80% (enforced) |
 | `e2e/site_profile.py` | 16 | 4 | 100% | >=80% (enforced) |
 | `report/suggestions.py` | 1 | 0 | 100% | >=80% (enforced) |
-| `report/build_report.py` | 43 | 14 | 96% | >=80% (enforced) |
+| `report/build_report.py` | 57 | 22 | 97% | >=80% (enforced) |
 | `scripts/ci/run_summary.py` | 373 | 130 | 98% | >=80% (enforced) |
 | `scripts/security/scorecard_guard.py` | 214 | 140 | 87% | >=80% (enforced) |
 | `e2e/e2e_audit.py` | 43 | 10 | 0% | N/A (see below) |
@@ -48,8 +48,9 @@ scope. Uncovered lines elsewhere (mostly `->exit` defensive paths, the
 `__main__` guard and the 3.11 import-guard raise) are visible in the CI
 report with `-m`.
 
-`e2e/budgets.py` was added with #4's PR, so it has no pre-PR baseline;
-its row was measured on that PR's head with the same command.
+`e2e/budgets.py` (added with #4's PR) and `report/build_report.py`
+(extended with #5's PR) have no single pre-PR baseline; their rows were
+measured on those PRs' heads with the same command.
 
 ## Suites
 
@@ -57,9 +58,10 @@ its row was measured on that PR's head with the same command.
   non-finite and non-positive handling for the two budget env vars.
 - `unit/test_site_profile.py` (5 tests): env-JSON loading and
   `run_forms` against a fake recording page object; no browser.
-- `unit/test_build_report.py` (7 tests): the module runs `main()` at
+- `unit/test_build_report.py` (9 tests): the module runs `main()` at
   import, so each case loads a fresh copy with patched argv;
-  `requests.get` is faked (payload or raising stub), never live.
+  `requests.get` is faked (payload or raising stub), never live. Two
+  cases cover the `--json-out` machine-readable summary (#5).
 - `unit/test_suggestions.py` (3 tests): suggestion-table shape.
 - `unit/test_run_summary.py` (30 tests): ported from
   parking-report-intake#42; GitHub jobs API mocked, git calls faked.

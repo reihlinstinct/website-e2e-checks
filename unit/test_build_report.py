@@ -149,6 +149,31 @@ class BuildReportTests(unittest.TestCase):
             out, _ = load_report(["build_report.py", str(self.junit)])
         self.assertIn("(software detection skipped: KeyError)", out)
 
+    def test_json_out_written(self):
+        target = Path(self.tmp.name) / "results.json"
+        load_report(["build_report.py", str(self.junit), f"--json-out={target}"],
+                    env={"SITE_URL": "https://x.example.invalid"},
+                    get=lambda *a, **k: FakeResp())
+        data = json.loads(target.read_text(encoding="utf-8"))
+        self.assertEqual((data["passed"], data["failed"], data["skipped"]), (1, 3, 1))
+        self.assertEqual(len(data["results"]), 5)
+        by_name = {r["name"]: r for r in data["results"]}
+        self.assertEqual(by_name["test_home_ok"]["status"], "pass")
+        self.assertEqual(by_name["test_csp_present"]["status"], "FAIL")
+        self.assertIn("Content-Security-Policy",
+                      by_name["test_csp_present"]["suggestion"])
+        self.assertEqual(by_name["test_csp_present"]["detail"], "missing header")
+        self.assertNotIn("browser_audit", data)
+
+    def test_json_out_includes_browser_audit(self):
+        target = Path(self.tmp.name) / "results.json"
+        load_report(["build_report.py", str(self.junit), str(self.e2e),
+                     f"--json-out={target}"],
+                    env={"SITE_URL": "https://x.example.invalid"},
+                    get=lambda *a, **k: FakeResp())
+        data = json.loads(target.read_text(encoding="utf-8"))
+        self.assertEqual(data["browser_audit"], E2E_JSON)
+
     def test_detection_degrades_on_request_failure(self):
         out, _ = load_report(["build_report.py", str(self.junit)],
                              env={"SITE_URL": "https://x.example.invalid"},
