@@ -18,6 +18,8 @@ Point it at a site through configuration and it runs the whole suite. Nothing ab
 | `EXPECT_LANG` | no | Expected `lang` prefix on the html element (for example `en`). Test is skipped when unset. |
 | `EXPECT_DIR` | no | Expected `dir` (`ltr` or `rtl`). Skipped when unset. |
 | `LOCALE` | no | Browser locale for e2e, default `en-US`. |
+| `RESPONSE_BUDGET_SECONDS` | no | Home-page response-time budget in seconds, default `3.0`. |
+| `HTML_BUDGET_BYTES` | no | Uncompressed home-page HTML budget in bytes, default `500000`. |
 
 Every workflow ends with a `Run summary` job that writes a summary to the top of the run page: which jobs ran, their result and duration, what was skipped and why, the commits and files the run changed, and which checks cover those changes (`.github/ci-coverage-map.json` declares the coverage; files matching no mapping are flagged). The script is `scripts/ci/run_summary.py`.
 

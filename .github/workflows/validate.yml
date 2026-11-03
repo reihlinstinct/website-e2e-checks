@@ -39,6 +39,7 @@ jobs:
         run: |
           coverage erase
           coverage run --branch --source=e2e,report,scripts -m pytest --noconftest unit tests/security -q
+          coverage report --include=e2e/budgets.py --fail-under=80
           coverage report --include=e2e/site_profile.py --fail-under=80
           coverage report --include=report/suggestions.py --fail-under=80
           coverage report --include=report/build_report.py --fail-under=80

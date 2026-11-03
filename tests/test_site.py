@@ -1,5 +1,6 @@
 import os, re, time, pytest, requests
 from conftest import BASE, HEADERS, find, tls_context
+from e2e.budgets import html_bytes, response_seconds
 
 
 def test_home_ok(home):
@@ -12,12 +13,14 @@ def test_http_redirects_to_https():
 
 
 def test_response_time(home):
-    assert home.elapsed_s < 3.0, f"home took {home.elapsed_s:.2f}s"
+    budget = response_seconds()
+    assert home.elapsed_s < budget, f"home took {home.elapsed_s:.2f}s (budget {budget:g}s)"
 
 
 def test_html_weight_under_budget():
     r = requests.get(BASE + "/", headers={**HEADERS, "Accept-Encoding": "identity"}, timeout=30)
-    assert len(r.content) < 500_000, f"uncompressed HTML is {len(r.content)//1024} KB"
+    budget = html_bytes()
+    assert len(r.content) < budget, f"uncompressed HTML is {len(r.content)//1024} KB (budget {budget//1024} KB)"
 
 
 def test_gzip_enabled():

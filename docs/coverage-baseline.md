@@ -9,6 +9,7 @@ offline only: no live website probes were run as coverage measurement.
 ```sh
 coverage run --branch --source=e2e,report,scripts \
   -m pytest --noconftest unit tests/security -q
+coverage report --include=e2e/budgets.py --fail-under=80
 coverage report --include=e2e/site_profile.py --fail-under=80
 coverage report --include=report/suggestions.py --fail-under=80
 coverage report --include=report/build_report.py --fail-under=80
@@ -24,10 +25,11 @@ cannot hide from the report.
 
 ## Production-only denominator
 
-Measured production code (branch coverage, 91 tests + 21 subtests):
+Measured production code (branch coverage, 102 tests + 21 subtests):
 
 | Module | Stmts | Branch | Cover | Floor |
 |---|---|---|---|---|
+| `e2e/budgets.py` | 17 | 4 | 100% | >=80% (enforced) |
 | `e2e/site_profile.py` | 16 | 4 | 100% | >=80% (enforced) |
 | `report/suggestions.py` | 1 | 0 | 100% | >=80% (enforced) |
 | `report/build_report.py` | 43 | 14 | 96% | >=80% (enforced) |
@@ -46,8 +48,13 @@ scope. Uncovered lines elsewhere (mostly `->exit` defensive paths, the
 `__main__` guard and the 3.11 import-guard raise) are visible in the CI
 report with `-m`.
 
+`e2e/budgets.py` was added with #4's PR, so it has no pre-PR baseline;
+its row was measured on that PR's head with the same command.
+
 ## Suites
 
+- `unit/test_budgets.py` (11 tests): default, empty, override, invalid
+  and non-positive handling for the two budget env vars.
 - `unit/test_site_profile.py` (5 tests): env-JSON loading and
   `run_forms` against a fake recording page object; no browser.
 - `unit/test_build_report.py` (7 tests): the module runs `main()` at
