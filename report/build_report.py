@@ -25,9 +25,16 @@ from suggestions import SUGGESTIONS
 def main():
     json_out = None
     args = []
-    for a in sys.argv[1:]:
-        if a.startswith("--json-out="):
+    it = iter(sys.argv[1:])
+    for a in it:
+        if a == "--json-out":
+            json_out = next(it, None)
+            if not json_out:
+                raise SystemExit("--json-out requires a path")
+        elif a.startswith("--json-out="):
             json_out = a.split("=", 1)[1]
+        elif a.startswith("--"):
+            raise SystemExit(f"unknown argument: {a}")
         else:
             args.append(a)
     root = ET.parse(args[0]).getroot()
@@ -61,6 +68,8 @@ def main():
         out.append(f"\n(software detection skipped: {type(exc).__name__})")
     out.append("\n## All checks\n")
     out += [f"- {st}: {n}" for n, st, _, _ in rows]
+    print("\n".join(out))
+    print(f"passed={p} failed={f} skipped={s}", file=sys.stderr)
     if json_out:
         summary = {"passed": p, "failed": f, "skipped": s,
                    "results": [{"name": n, "status": st, "suggestion": sug, "detail": d}
@@ -70,7 +79,5 @@ def main():
         with open(json_out, "w", encoding="utf-8") as fh:
             json.dump(summary, fh, indent=2, ensure_ascii=False)
             fh.write("\n")
-    print("\n".join(out))
-    print(f"passed={p} failed={f} skipped={s}", file=sys.stderr)
 
 main()
