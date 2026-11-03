@@ -1,4 +1,7 @@
-import os, re, ssl, pytest, requests
+import os, re, ssl, sys, pytest, requests
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))  # repo root, for e2e.budgets
 
 BASE = os.environ["SITE_URL"].rstrip("/")  # required; supplied via env or Actions secret, never stored in the repo
 HEADERS = {"User-Agent": "website-e2e-checks/0.1 (owner-requested, single-user checks)"}
