@@ -5,7 +5,7 @@ secrets) override the response-time and uncompressed-HTML-size budgets used
 by `tests/test_site.py`. Unset or empty keeps the defaults, which match the
 previously hard-coded values (3.0 seconds, 500_000 bytes).
 """
-import os
+import math, os
 
 DEFAULT_RESPONSE_SECONDS = 3.0
 DEFAULT_HTML_BYTES = 500_000
@@ -18,6 +18,8 @@ def _positive(raw, name, default, cast):
         value = cast(raw)
     except ValueError:
         raise ValueError(f"{name} must be a number, got {raw!r}") from None
+    if not math.isfinite(value):
+        raise ValueError(f"{name} must be finite, got {raw!r}")
     if value <= 0:
         raise ValueError(f"{name} must be positive, got {raw!r}")
     return value

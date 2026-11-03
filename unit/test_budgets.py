@@ -65,6 +65,12 @@ class BudgetTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, BYTES):
             budgets.html_bytes()
 
+    def test_non_finite_response_rejected(self):
+        for bad in ("inf", "-inf", "nan"):
+            os.environ[SECONDS] = bad
+            with self.assertRaisesRegex(ValueError, "finite"):
+                budgets.response_seconds()
+
     def test_zero_and_negative_rejected(self):
         for name, fn in ((SECONDS, budgets.response_seconds), (BYTES, budgets.html_bytes)):
             for bad in ("0", "-1"):

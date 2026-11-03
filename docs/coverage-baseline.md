@@ -25,11 +25,11 @@ cannot hide from the report.
 
 ## Production-only denominator
 
-Measured production code (branch coverage, 102 tests + 21 subtests):
+Measured production code (branch coverage, 103 tests + 21 subtests):
 
 | Module | Stmts | Branch | Cover | Floor |
 |---|---|---|---|---|
-| `e2e/budgets.py` | 17 | 4 | 100% | >=80% (enforced) |
+| `e2e/budgets.py` | 19 | 6 | 100% | >=80% (enforced) |
 | `e2e/site_profile.py` | 16 | 4 | 100% | >=80% (enforced) |
 | `report/suggestions.py` | 1 | 0 | 100% | >=80% (enforced) |
 | `report/build_report.py` | 43 | 14 | 96% | >=80% (enforced) |
@@ -53,8 +53,8 @@ its row was measured on that PR's head with the same command.
 
 ## Suites
 
-- `unit/test_budgets.py` (11 tests): default, empty, override, invalid
-  and non-positive handling for the two budget env vars.
+- `unit/test_budgets.py` (12 tests): default, empty, override, invalid,
+  non-finite and non-positive handling for the two budget env vars.
 - `unit/test_site_profile.py` (5 tests): env-JSON loading and
   `run_forms` against a fake recording page object; no browser.
 - `unit/test_build_report.py` (7 tests): the module runs `main()` at
