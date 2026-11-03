@@ -174,6 +174,26 @@ class BuildReportTests(unittest.TestCase):
         data = json.loads(target.read_text(encoding="utf-8"))
         self.assertEqual(data["browser_audit"], E2E_JSON)
 
+    def test_json_out_split_form(self):
+        target = Path(self.tmp.name) / "results.json"
+        load_report(["build_report.py", str(self.junit), "--json-out", str(target)],
+                    env={"SITE_URL": "https://x.example.invalid"},
+                    get=lambda *a, **k: FakeResp())
+        data = json.loads(target.read_text(encoding="utf-8"))
+        self.assertEqual((data["passed"], data["failed"], data["skipped"]), (1, 3, 1))
+
+    def test_json_out_missing_path_rejected(self):
+        with self.assertRaisesRegex(SystemExit, "requires a path"):
+            load_report(["build_report.py", str(self.junit), "--json-out"],
+                        env={"SITE_URL": "https://x.example.invalid"},
+                        get=lambda *a, **k: FakeResp())
+
+    def test_unknown_flag_rejected_loudly(self):
+        with self.assertRaisesRegex(SystemExit, "unknown argument: --bogus"):
+            load_report(["build_report.py", str(self.junit), "--bogus"],
+                        env={"SITE_URL": "https://x.example.invalid"},
+                        get=lambda *a, **k: FakeResp())
+
     def test_detection_degrades_on_request_failure(self):
         out, _ = load_report(["build_report.py", str(self.junit)],
                              env={"SITE_URL": "https://x.example.invalid"},
