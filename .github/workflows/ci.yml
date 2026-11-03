@@ -26,7 +26,7 @@ jobs:
           playwright install --with-deps chromium >/dev/null 2>&1
           curl -fsSL https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js -o axe.min.js
           python e2e/e2e_audit.py reports/shots axe.min.js >/dev/null 2>&1
-          python report/build_report.py reports/junit.xml reports/shots/report.json > reports/report.md 2> reports/counts.txt
+          python report/build_report.py reports/junit.xml reports/shots/report.json --json-out=reports/results.json > reports/report.md 2> reports/counts.txt
           echo "check run finished"
       - name: Encrypt report to the recipient certificate
         run: openssl cms -encrypt -aes-256-cbc -in reports/report.md -out report.p7m -outform DER certs/report-recipient.pem
@@ -60,7 +60,7 @@ jobs:
           playwright install --with-deps chromium >/dev/null 2>&1
           curl -fsSL https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js -o axe.min.js
           python e2e/e2e_audit.py reports/shots axe.min.js >/dev/null 2>&1
-          python report/build_report.py reports/junit.xml reports/shots/report.json > reports/report.md 2> reports/counts.txt
+          python report/build_report.py reports/junit.xml reports/shots/report.json --json-out=reports/results.json > reports/report.md 2> reports/counts.txt
           echo "check run finished"
       - name: Encrypt report to the private certificate
         run: openssl cms -encrypt -aes-256-cbc -in reports/report.md -out report-b.p7m -outform DER certs/private-report-recipient.pem

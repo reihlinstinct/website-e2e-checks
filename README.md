@@ -38,6 +38,15 @@ is aborted, so forms are validated but never submitted. Real submissions need te
     SITE_URL=https://example.com python e2e/form_validation.py shots
 
 Results (`shots/`, `reports/`) are git-ignored on purpose: they describe a specific site.
+
+### Machine-readable results
+
+    mkdir -p reports
+    SITE_URL=https://example.com pytest tests -q --junitxml=reports/junit.xml
+    SITE_URL=https://example.com python report/build_report.py reports/junit.xml --json-out=reports/results.json > reports/report.md
+
+`reports/results.json` carries counts and per-test results (plus the browser audit when e2e ran);
+`reports/report.md` is the human summary. Both stay local and git-ignored, so they can be shared privately.
 Some checks can fail for a given site, and that is the point.
 
 ## Private report from CI
