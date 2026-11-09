@@ -43,6 +43,9 @@ class FakeResponse:
         return json.dumps(self.payload).encode("utf-8")
 
 
+# Section: PureFunctionTests
+
+
 class PureFunctionTests(unittest.TestCase):
     def test_fmt_dur_boundaries(self):
         self.assertEqual(rs.fmt_dur(0), "0s")
@@ -167,6 +170,9 @@ class PureFunctionTests(unittest.TestCase):
         rs._self_test()  # must not raise
 
 
+# Section: JobDurationsTests
+
+
 class JobDurationsTests(unittest.TestCase):
     def env(self, **over):
         base = {"GITHUB_TOKEN": "t", "GITHUB_REPOSITORY": "o/r",
@@ -208,6 +214,9 @@ class JobDurationsTests(unittest.TestCase):
         self.assertEqual(durations, {"a": 65.0})
         self.assertEqual(captured["auth"], "Bearer t")
         self.assertIn("/repos/o/r/actions/runs/1/jobs", captured["url"])
+
+
+# Section: FileReadingTests
 
 
 class FileReadingTests(unittest.TestCase):
@@ -259,6 +268,9 @@ class FileReadingTests(unittest.TestCase):
         with mock.patch.object(rs, "MAP_PATH", str(good)):
             entries = rs.load_map()
         self.assertEqual([p for _rx, p, _c in entries], ["src/**"])
+
+
+# Section: MainTests
 
 
 class MainTests(unittest.TestCase):
