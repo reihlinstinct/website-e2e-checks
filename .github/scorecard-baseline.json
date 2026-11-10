@@ -32,6 +32,14 @@
       "evidence": "pip install requests pytest coverage",
       "issue": "https://github.com/reihlinstinct/website-e2e-checks/issues/22",
       "reason": "Coverage job test tooling installed without --require-hashes, matching the repo's existing baselined pip pattern; tracked for hash pinning under the repo's scorecard tracker."
+    },
+    {
+      "path": ".github/workflows/gemini-review.yml",
+      "rule": "job-write",
+      "scope": "gemini-review",
+      "evidence": "pull-requests: write",
+      "issue": "https://github.com/reihlinstinct/gemini-pr-review/issues/1",
+      "reason": "Owner-approved event-driven Gemini PR review; COMMENT-only advisory reviews, idempotent per head SHA. Tracked in reihlinstinct/gemini-pr-review#1."
     }
   ]
 }
