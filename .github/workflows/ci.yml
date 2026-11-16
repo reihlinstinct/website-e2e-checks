@@ -15,7 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with: { python-version: "3.13" }
+        with:
+          python-version: "3.13"
+          cache: pip
       - run: pip install requests pytest playwright >/dev/null 2>&1
       # Public repo: nothing about the target may reach logs or artifacts in clear text.
       - name: Run checks (quiet)
@@ -48,7 +50,9 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
-        with: { python-version: "3.13" }
+        with:
+          python-version: "3.13"
+          cache: pip
       - run: pip install requests pytest playwright >/dev/null 2>&1
       # Second target. Detailed report encrypted to its own private certificate (never the first target's).
       # Public log and summary show counts only.
